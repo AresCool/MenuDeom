@@ -134,13 +134,13 @@ public class MenuView extends LinearLayout {
                         current_tab_position = -1;
                     }
                     if (listener != null) {
-                        listener.onClickCancle(i);
+                       listener.onClickCancle(i,target);
                     }
                 } else {
                     setTextBack(childCount, i, true);
                     current_tab_position = i;
                     if (listener != null) {
-                        listener.onClickMenuItem(i);
+                        listener.onClickMenuItem(i,target);
                     }
                 }
             } else {
@@ -218,7 +218,7 @@ public class MenuView extends LinearLayout {
                         getResources().getDrawable(menuUnselectedIcon), null);
             }
         }
-
+        current_tab_position = -1;
     }
 
     /**
@@ -232,11 +232,11 @@ public class MenuView extends LinearLayout {
     }
 
     public interface MenuViewListner {
-        //取消
-        void onClickCancle(int tag);
+      //取消
+        void onClickCancle(int tag,View view);
 
         //选中
-        void onClickMenuItem(int tag);
+        void onClickMenuItem(int tag,View view);
     }
 
 }
