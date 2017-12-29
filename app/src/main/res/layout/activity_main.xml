@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.ares.xq.demo.MenuView
+        android:id="@+id/menu_tabs"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:orientation="horizontal"
+        app:isLastShowIco="true"
+        app:select_ico="@drawable/filter_up"
+        app:textColor="#666666"
+        app:textSize="13sp"
+        app:un_select_ico="@drawable/filter_down">
+
+    </com.ares.xq.demo.MenuView>
+
+</LinearLayout>

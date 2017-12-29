@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="DropDownMenu">
+
+        <attr name="textColor" format="color" />
+        <attr name="textSize" format="dimension" />
+        <attr name="isLastShowIco" format="boolean" />
+        <attr name="select_ico" format="reference" />
+        <attr name="un_select_ico" format="reference" />
+    </declare-styleable>
+</resources>
