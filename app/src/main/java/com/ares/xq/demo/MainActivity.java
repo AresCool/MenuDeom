@@ -12,7 +12,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         final MenuView menu = findViewById(R.id.menu_tabs);
-        String[] titles = {"菜单-1", "菜单-2", "菜单-3", "菜单-4"};
+        String[] titles = {"菜单-0", "菜单-1", "菜单-2", "菜单-3"};
         menu.setDropDownMenu(Arrays.asList(titles));
         menu.setListener(new MenuView.MenuViewListner() {
             @Override

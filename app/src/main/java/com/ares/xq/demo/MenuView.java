@@ -28,8 +28,8 @@ public class MenuView extends LinearLayout {
     private int menuSelectedIcon;
     //tab未选中图标
     private int menuUnselectedIcon;
-    //是否显示最后一个ico
-    private boolean isShowLastIco = false;
+    //是否显示最后一个ico,默认显示
+    private boolean isShowLastIco = true;
 
     private int textColor = 0x666666;
 
@@ -71,7 +71,15 @@ public class MenuView extends LinearLayout {
     public void setDropDownMenu(@NonNull List<String> tabTexts) {
         final int size = tabTexts.size();
         for (int i = 0; i < size; i++) {
-            addTextView(tabTexts.get(i), true);
+            if (isShowLastIco) {
+                addTextView(tabTexts.get(i), true);
+            } else {
+                if (i == size - 1) {
+                    addTextView(tabTexts.get(i), false);
+                } else {
+                    addTextView(tabTexts.get(i), true);
+                }
+            }
         }
     }
 
@@ -93,8 +101,10 @@ public class MenuView extends LinearLayout {
         tv.setLayoutParams(new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         tv.setTextSize(TypedValue.COMPLEX_UNIT_PX, menuTextSize);
         tv.setTextColor(textColor);
-        tv.setCompoundDrawablesWithIntrinsicBounds(null, null, getResources().getDrawable(menuUnselectedIcon), null);
-        tv.setCompoundDrawablePadding(dpTpPx(5));
+        if (isShowIco) {
+            tv.setCompoundDrawablesWithIntrinsicBounds(null, null, getResources().getDrawable(menuUnselectedIcon), null);
+            tv.setCompoundDrawablePadding(dpTpPx(5));
+        }
         tv.setText(titlle);
         rootItemView.addView(tv);
         rootItemView.setOnClickListener(new OnClickListener() {
@@ -119,9 +129,7 @@ public class MenuView extends LinearLayout {
         for (int i = 0; i < childCount; i++) {
             if (target == getChildAt(i)) {
                 if (current_tab_position == i) {
-                    ((TextView) ((LinearLayout) getChildAt(i)).getChildAt(0)).setTextColor(textColor);
-                    ((TextView) ((LinearLayout) getChildAt(i)).getChildAt(0)).setCompoundDrawablesWithIntrinsicBounds(null, null,
-                            getResources().getDrawable(menuUnselectedIcon), null);
+                    setTextBack(childCount, i, false);
                     if (current_tab_position != -1) {
                         current_tab_position = -1;
                     }
@@ -129,22 +137,50 @@ public class MenuView extends LinearLayout {
                         listener.onClickCancle(i);
                     }
                 } else {
-                    ((TextView) ((LinearLayout) getChildAt(i)).getChildAt(0)).setTextColor(textColor);
-                    ((TextView) ((LinearLayout) getChildAt(i)).getChildAt(0)).setCompoundDrawablesWithIntrinsicBounds(null, null,
-                            getResources().getDrawable(menuSelectedIcon), null);
+                    setTextBack(childCount, i, true);
                     current_tab_position = i;
                     if (listener != null) {
                         listener.onClickMenuItem(i);
                     }
                 }
             } else {
-                ((TextView) ((LinearLayout) getChildAt(i)).getChildAt(0)).setTextColor(textColor);
-                ((TextView) ((LinearLayout) getChildAt(i)).getChildAt(0)).setCompoundDrawablesWithIntrinsicBounds(null, null,
-                        getResources().getDrawable(menuUnselectedIcon), null);
+                setTextBack(childCount, i, false);
             }
         }
     }
 
+
+    private void setTextBack(int count, int tag, boolean isUpOrDown) {
+        if (isUpOrDown) {//select
+            if (isShowLastIco) {
+                ((TextView) ((LinearLayout) getChildAt(tag)).getChildAt(0)).setTextColor(textColor);
+                ((TextView) ((LinearLayout) getChildAt(tag)).getChildAt(0)).setCompoundDrawablesWithIntrinsicBounds(null, null,
+                        getResources().getDrawable(menuSelectedIcon), null);
+            } else {
+                if (tag == count - 1) {
+                    ((TextView) ((LinearLayout) getChildAt(tag)).getChildAt(0)).setTextColor(textColor);
+                } else {
+                    ((TextView) ((LinearLayout) getChildAt(tag)).getChildAt(0)).setTextColor(textColor);
+                    ((TextView) ((LinearLayout) getChildAt(tag)).getChildAt(0)).setCompoundDrawablesWithIntrinsicBounds(null, null,
+                            getResources().getDrawable(menuSelectedIcon), null);
+                }
+            }
+        } else {//unselect
+            if (isShowLastIco) {
+                ((TextView) ((LinearLayout) getChildAt(tag)).getChildAt(0)).setTextColor(textColor);
+                ((TextView) ((LinearLayout) getChildAt(tag)).getChildAt(0)).setCompoundDrawablesWithIntrinsicBounds(null, null,
+                        getResources().getDrawable(menuUnselectedIcon), null);
+            } else {
+                if (tag == count - 1) {
+                    ((TextView) ((LinearLayout) getChildAt(tag)).getChildAt(0)).setTextColor(textColor);
+                } else {
+                    ((TextView) ((LinearLayout) getChildAt(tag)).getChildAt(0)).setCompoundDrawablesWithIntrinsicBounds(null, null,
+                            getResources().getDrawable(menuUnselectedIcon), null);
+                }
+            }
+
+        }
+    }
 
     public int dpTpPx(float value) {
         DisplayMetrics dm = getResources().getDisplayMetrics();
@@ -168,9 +204,21 @@ public class MenuView extends LinearLayout {
      * @param tag
      */
     public void closeItemMenu(int tag) {
-        ((TextView) ((LinearLayout) getChildAt(tag)).getChildAt(0)).setTextColor(textColor);
-        ((TextView) ((LinearLayout) getChildAt(tag)).getChildAt(0)).setCompoundDrawablesWithIntrinsicBounds(null, null,
-                getResources().getDrawable(menuUnselectedIcon), null);
+        int childCount = getChildCount();
+        if (isShowLastIco) {
+            ((TextView) ((LinearLayout) getChildAt(tag)).getChildAt(0)).setTextColor(textColor);
+            ((TextView) ((LinearLayout) getChildAt(tag)).getChildAt(0)).setCompoundDrawablesWithIntrinsicBounds(null, null,
+                    getResources().getDrawable(menuUnselectedIcon), null);
+        } else {
+            if (tag == childCount - 1) {
+                ((TextView) ((LinearLayout) getChildAt(tag)).getChildAt(0)).setTextColor(textColor);
+            } else {
+                ((TextView) ((LinearLayout) getChildAt(tag)).getChildAt(0)).setTextColor(textColor);
+                ((TextView) ((LinearLayout) getChildAt(tag)).getChildAt(0)).setCompoundDrawablesWithIntrinsicBounds(null, null,
+                        getResources().getDrawable(menuUnselectedIcon), null);
+            }
+        }
+
     }
 
     /**
